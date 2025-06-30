@@ -3,6 +3,8 @@ Date: June 29, 2025
 Author: Kaylyn Duncan
 */
 
+let gameFileHandle = null;
+
 // === GAME STATE ===
 var board = Array(9).fill("");
 var playerTurnCount = 0;
