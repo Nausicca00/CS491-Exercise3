@@ -1,0 +1,5 @@
+{
+    "board": ["", "", "", "", "", "", "", "", ""],
+    "playerTurnCount": 0,
+    "gameOver": false
+}
