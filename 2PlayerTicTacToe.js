@@ -17,6 +17,35 @@ async function openGameFile(){
     });
 }
 
+/**
+ * Loads the game state from the file
+ */
+async function loadGameState(){
+    if(!gameFileHandle) return;
+
+    const file = await gameFileHandle.getFile();
+    const text = await file.text();
+    const state = JSON.parse(text);
+
+    board = state.board;
+    playerTurnCount = state.playerTurnCount;
+    gameOver = state.gameOver;
+
+    for(let i = 0; i < 9; i++){
+        const id = indexToId(i);
+        const btn = document.getElementById(id);
+        btn.value = board[i];
+        btn.disabled = board[i] !== "";
+        btn.style.color = "black";
+    }
+
+    const result = checkWinner(board);
+    if(result.winner){
+        highlightWin(result.line);
+        gameOver = true;
+    }
+}
+
 // === GAME STATE ===
 var board = Array(9).fill("");
 var playerTurnCount = 0;
