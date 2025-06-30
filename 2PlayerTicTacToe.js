@@ -156,7 +156,7 @@ async function toggleBtn(){
  * @param {*} id 
  * @returns 
  */
-function makeX(id){
+async function makeMove(id){
   if (gameOver) return;
 
   var idx = idToIndex(id);
@@ -167,17 +167,17 @@ function makeX(id){
     toggle.value = "Clear";
   }
 
-  board[idx] = "X";
+  board[idx] = playerTurnCount % 2 === 0 ? "O" : "X";
   var btn = document.getElementById(id);
-  btn.value = "X";
+  btn.value = board[idx];
   btn.disabled = true;
 
   var result = checkWinner(board);
   if (result.winner) {
     highlightWin(result.line);
     gameOver = true;
-    return;
   }
 
   playerTurnCount++;
+  await saveGameState();
 }
