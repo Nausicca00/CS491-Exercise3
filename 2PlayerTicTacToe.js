@@ -5,6 +5,15 @@ Author: Kaylyn Duncan
 
 let gameFileHandle = null;
 
+async function openGameFile(){
+    [gameFileHandle] = await window.showOpenFilePicker({
+        types: [{
+            description: "JSON Game State",
+            accept: {"application/json": [".json"]}
+        }]
+    });
+}
+
 // === GAME STATE ===
 var board = Array(9).fill("");
 var playerTurnCount = 0;
