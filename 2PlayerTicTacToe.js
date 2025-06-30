@@ -3,13 +3,16 @@ Date: June 29, 2025
 Author: Kaylyn Duncan
 */
 
-//Game Playing Logic
 // === GAME STATE ===
 var board = Array(9).fill("");
 var playerTurnCount = 0;
 var gameOver = false;
 
-//Converts button ID to board index.
+// === UTILITY ===
+
+/**
+ * Converts button ID to board index.
+ */
 function idToIndex(id) {
   return {
     one: 0, two: 1, three: 2,
@@ -18,7 +21,9 @@ function idToIndex(id) {
   }[id];
 }
 
-//Converts board index to button ID.
+/**
+ * Converts board index to button ID.
+ */
 function indexToId(index) {
   return [
     "one", "two", "three",
@@ -27,8 +32,11 @@ function indexToId(index) {
   ][index];
 }
 
-//Checks if someone has won
-//@returns {{winner: string|null, line: number[]|null}}
+/**
+ * Checks if someone has won
+ * @param {string[]} b - The game board (lenght 9)
+ * @returns {{winner: string|null, line: number[]|null}}
+ */
 function checkWinner(b){
   var wins = [
     [0,1,2],[3,4,5],[6,7,8], // rows
@@ -44,11 +52,25 @@ function checkWinner(b){
   return { winner: null, line: null };
 }
 
-//Game Presentation Logic
+/**
+ * Highlights the winning triple in red 
+ */
+function highlightWin(line) {
+  line.forEach(i => {
+    var id = indexToId(i);
+    document.getElementById(id).style.color = "red";
+  });
+}
+
+// === UI LOGIC ===
+
+/**
+ * Handles Start/Clear button toggle
+ */
 function toggleBtn(){
   var btn = document.getElementById("btn");
   if (btn.value === "Clear") {
-    // reset all
+    // Clear board
     board = Array(9).fill("");
     playerTurnCount = 0;
     gameOver = false;
@@ -62,7 +84,7 @@ function toggleBtn(){
       el.style.color = "black";
     }
   } else {
-    // game hasn't started yet
+    // Game hasn't started yet
     var allEmpty = board.every(v => v === "");
     if (allEmpty) {
       btn.value = "Clear";
@@ -70,7 +92,11 @@ function toggleBtn(){
   }
 }
 
-//Players move and then checks winner
+/**
+ * Handles player move
+ * @param {*} id 
+ * @returns 
+ */
 function makeX(id){
   if (gameOver) return;
 
@@ -87,19 +113,12 @@ function makeX(id){
   btn.value = "X";
   btn.disabled = true;
 
-  playerTurnCount++;
-
   var result = checkWinner(board);
   if (result.winner) {
     highlightWin(result.line);
     gameOver = true;
     return;
   }
-}
 
-function highlightWin(line) {
-  line.forEach(i => {
-    var id = indexToId(i);
-    document.getElementById(id).style.color = "red";
-  });
+  playerTurnCount++;
 }
