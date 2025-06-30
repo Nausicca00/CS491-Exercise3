@@ -46,6 +46,19 @@ async function loadGameState(){
     }
 }
 
+/**
+ * Saves the game state
+ */
+async function saveGameState(){
+    if(!gameFileHandle) return;
+
+    const state = {board, playerTurnCount, gameOver};
+
+    const writable = await gameFileHandle.createWritable();
+    await writable.write(JSON.stringify(state, null, 2));
+    await writable.close();
+}
+
 // === GAME STATE ===
 var board = Array(9).fill("");
 var playerTurnCount = 0;
