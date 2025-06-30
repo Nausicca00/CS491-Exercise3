@@ -7,7 +7,6 @@ Author: Kaylyn Duncan
 // === GAME STATE ===
 var board = Array(9).fill("");
 var playerTurnCount = 0;
-var computerStarted = false;
 var gameOver = false;
 
 //Converts button ID to board index.
@@ -26,36 +25,6 @@ function indexToId(index) {
     "four", "five", "six",
     "seven", "eight", "nine"
   ][index];
-}
-
-//Chooses computers move and then checks if there's a winner
-function computerTurn(count = 1) {
-  for (let i = 0; i < count; i++) {
-    if (gameOver) return;
-
-    var move = getBestMove(board);
-    if (move == null) return;
-
-    board[move] = "O";
-    var id = indexToId(move);
-    var btn = document.getElementById(id);
-    btn.value = "O";
-    btn.disabled = true;
-
-    var result = checkWinner(board);
-    if (result.winner) {
-      highlightWin(result.line);
-      gameOver = true;
-      return;
-    }
-  }
-}
-
-//Figures out the best move for the computer based on strategy
-function getBestMove(b){
-  var empty = b.map((v, i) => v === "" ? i : null).filter(i => i !== null);
-  var preferred = [4, 0, 2, 6, 8, 1, 3, 5, 7];
-  return preferred.find(i => empty.includes(i)) ?? null;
 }
 
 //Checks if someone has won
@@ -82,7 +51,6 @@ function toggleBtn(){
     // reset all
     board = Array(9).fill("");
     playerTurnCount = 0;
-    computerStarted = false;
     gameOver = false;
     btn.value = "Start";
 
@@ -97,8 +65,6 @@ function toggleBtn(){
     // game hasn't started yet
     var allEmpty = board.every(v => v === "");
     if (allEmpty) {
-      computerStarted = true;
-      computerTurn(2);
       btn.value = "Clear";
     }
   }
@@ -128,15 +94,6 @@ function makeX(id){
     highlightWin(result.line);
     gameOver = true;
     return;
-  }
-
-  if (!computerStarted && playerTurnCount === 2) {
-    // let's player make two moves
-    computerTurn(1);
-    computerStarted = true;
-  } else if (computerStarted && !gameOver) {
-    // let's player make one move
-    computerTurn(1);
   }
 }
 
