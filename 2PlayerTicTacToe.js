@@ -123,7 +123,7 @@ function highlightWin(line) {
 /**
  * Handles Start/Clear button toggle
  */
-function toggleBtn(){
+async function toggleBtn(){
   var btn = document.getElementById("btn");
   if (btn.value === "Clear") {
     // Clear board
@@ -139,11 +139,14 @@ function toggleBtn(){
       el.disabled = false;
       el.style.color = "black";
     }
+
+    await saveGameState();
   } else {
     // Game hasn't started yet
     var allEmpty = board.every(v => v === "");
     if (allEmpty) {
       btn.value = "Clear";
+      await saveGameState();
     }
   }
 }
