@@ -5,6 +5,9 @@ Author: Kaylyn Duncan
 
 let gameFileHandle = null;
 
+/**
+ * Gets the user to open the saved state json file
+ */
 async function openGameFile(){
     [gameFileHandle] = await window.showOpenFilePicker({
         types: [{
